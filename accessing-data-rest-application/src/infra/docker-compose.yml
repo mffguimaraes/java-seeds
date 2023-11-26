@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  database:
+    hostname: postgres-database
+    image: postgres:14-alpine
+    networks:
+      - main
+      - services
+    ports:
+      - ${DB_HOST_PORT:-5432}:5432
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DATABASES=accessing-data-rest-application
+
+volumes:
+  db-data:
+    driver: local
+
+networks:
+  main:
+    driver: bridge
+  services:
+    name: services
+    external: true
